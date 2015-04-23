@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\..\qsharp\QSharp\QSharp.Scheme.ExactCover\QSharp.Scheme.ExactCover.csproj">
+      <Project>{b0c01ea7-99a0-454c-8836-ea4be34ff3cb}</Project>
+      <Name>QSharp.Scheme.ExactCover</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Solver.cs" />
