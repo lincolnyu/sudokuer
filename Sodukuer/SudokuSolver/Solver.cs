@@ -52,9 +52,12 @@ namespace SudokuSolver
 
         #region Properties
 
-        public int Size { get; set; }
-
         public int SubregionSize { get; set; }
+
+        public int Size
+        {
+            get { return SubregionSize*SubregionSize; }
+        }
 
         #endregion
 
@@ -62,7 +65,7 @@ namespace SudokuSolver
 
         public void Setup()
         {
-            var lenInSubregion = Size/SubregionSize;
+            var lenInSubregion = SubregionSize;
             var totalSubRegions = lenInSubregion*lenInSubregion;
 
             _subes = new int[totalSubRegions,Size];
