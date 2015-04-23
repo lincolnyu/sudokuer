@@ -63,6 +63,9 @@ namespace SudokuSolver
 
         #region Methods
 
+        /// <summary>
+        ///  Sets up for the specified size
+        /// </summary>
         public void Setup()
         {
             var lenInSubregion = SubregionSize;
@@ -73,7 +76,7 @@ namespace SudokuSolver
             _coles = new int[Size, Size];
             _sets = new Set[Size, Size, Size];
 
-            var objId = 1;
+            var objId = 0; // 0 based is surely ok. it's index like id
             for (var n = 0; n < Size; n++)
             {
                 for (var y = 0; y < Size; y++)
@@ -148,12 +151,31 @@ namespace SudokuSolver
             _dl.Populate(dlsets, allcols, _rowDict);
         }
 
+        /// <summary>
+        ///  Places pre-existing numbers
+        /// </summary>
+        /// <param name="row">The row</param>
+        /// <param name="col">The column</param>
+        /// <param name="val">The number</param>
         public void Place(int row, int col, int val)
         {
             var set = _sets[row, col, val];
             _dl.Fix(_rowDict, new[] {set}, _fixSaved);
         }
 
+        /// <summary>
+        ///  Removes all placed pre-existing numbers
+        /// </summary>
+        public void UnPlace()
+        {
+            _dl.Reset();
+            _dl.UnFix(_fixSaved);
+        }
+        
+        /// <summary>
+        ///  Solves and gets the solution
+        /// </summary>
+        /// <returns>The solution if any or null</returns>
         public IEnumerable<Tuple> Solve()
         {
             while (_dl.State != DancingLinks<Set, int>.States.Terminated
@@ -180,12 +202,6 @@ namespace SudokuSolver
         public void Reset()
         {
             _dl.Reset();
-        }
-
-        public void UnPlace()
-        {
-            _dl.Reset();
-            _dl.UnFix(_fixSaved);
         }
 
         #endregion
