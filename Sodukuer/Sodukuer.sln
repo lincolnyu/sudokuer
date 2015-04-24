@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSharp.Scheme.ExactCover", "..\..\qsharp\QSharp\QSharp.Scheme.ExactCover\QSharp.Scheme.ExactCover.csproj", "{B0C01EA7-99A0-454C-8836-EA4BE34FF3CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sukoduer.Console", "Sukoduer.Console\Sukoduer.Console.csproj", "{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B0C01EA7-99A0-454C-8836-EA4BE34FF3CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C01EA7-99A0-454C-8836-EA4BE34FF3CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0C01EA7-99A0-454C-8836-EA4BE34FF3CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

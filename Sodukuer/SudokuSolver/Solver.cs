@@ -30,6 +30,7 @@ namespace SudokuSolver
             public int SubregionObjId { get; set; }
             public int RowObjId { get; set; }
             public int ColObjId { get; set; }
+            public int RowColObjId { get; set; }
 
             #endregion
         }
@@ -46,6 +47,7 @@ namespace SudokuSolver
         private int[,] _subes;
         private int[,] _rowes;
         private int[,] _coles;
+        private int[,] _rowcoles;
         private Set[,,] _sets;
 
         #endregion
@@ -74,22 +76,21 @@ namespace SudokuSolver
             _subes = new int[totalSubRegions,Size];
             _rowes = new int[Size, Size];
             _coles = new int[Size, Size];
+            _rowcoles = new int[Size, Size];
             _sets = new Set[Size, Size, Size];
 
             var objId = 0; // 0 based is surely ok. it's index like id
-            for (var n = 0; n < Size; n++)
+            for (var i = 0; i < Size; i++)
             {
-                for (var y = 0; y < Size; y++)
+                for (var j = 0; j < Size; j++)
                 {
-                    _rowes[y, n] = objId++;
-                }
-                for (var x = 0; x < Size; x++)
-                {
-                    _coles[x, n] = objId++;
+                    _rowes[j, i] = objId++;
+                    _rowcoles[j, i] = objId++;
+                    _coles[j, i] = objId++;
                 }
                 for (var sub = 0; sub < totalSubRegions; sub++)
                 {
-                    _subes[sub, n] = objId++;
+                    _subes[sub, i] = objId++;
                 }
             }
 
@@ -113,7 +114,8 @@ namespace SudokuSolver
                                     Val = n,
                                     SubregionObjId = _subes[sub, n],
                                     RowObjId = _rowes[y, n],
-                                    ColObjId = _coles[x, n]
+                                    ColObjId = _coles[x, n],
+                                    RowColObjId = _rowcoles[y, x]
                                 };
                             }
                         }
@@ -131,11 +133,12 @@ namespace SudokuSolver
                         var set = _sets[y, x, n];
                         var dlset = new DancingLinks<Set, int>.Set
                         {
-                            Contents =
+                            Contents = new[]
                             {
                                 set.RowObjId,
                                 set.ColObjId,
-                                set.SubregionObjId
+                                set.SubregionObjId,
+                                set.RowColObjId
                             },
                             Row = set
                         };
@@ -147,12 +150,13 @@ namespace SudokuSolver
             var allcols = _subes.Cast<int>().ToList();
             allcols.AddRange(_rowes.Cast<int>());
             allcols.AddRange(_coles.Cast<int>());
+            allcols.AddRange(_rowcoles.Cast<int>());
 
             _dl.Populate(dlsets, allcols, _rowDict);
         }
 
         /// <summary>
-        ///  Places pre-existing numbers
+        ///  Places a pre-existing number
         /// </summary>
         /// <param name="row">The row</param>
         /// <param name="col">The column</param>
@@ -164,14 +168,26 @@ namespace SudokuSolver
         }
 
         /// <summary>
+        ///  Place pre-existing numbers
+        /// </summary>
+        /// <param name="tuples">The pre-existing numbers</param>
+        public void Place(IEnumerable<Tuple> tuples)
+        {
+            var pesets = tuples.Select(tuple => _sets[tuple.Row, tuple.Column, tuple.Value]).ToList();
+            _dl.Fix(_rowDict, pesets, _fixSaved);
+        }
+
+        /// <summary>
         ///  Removes all placed pre-existing numbers
         /// </summary>
         public void UnPlace()
         {
-            _dl.Reset();
-            _dl.UnFix(_fixSaved);
+            if (_fixSaved.FirstColumn != null)
+            {
+                _dl.UnFix(_fixSaved);
+            }
         }
-        
+
         /// <summary>
         ///  Solves and gets the solution
         /// </summary>
