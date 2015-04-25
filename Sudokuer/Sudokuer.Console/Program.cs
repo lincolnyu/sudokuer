@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SudokuSolver;
 
-namespace Sukoduer.Console
+namespace Sudokuer.Console
 {
     public class Program
     {
@@ -40,7 +40,7 @@ namespace Sukoduer.Console
             System.Console.WriteLine(puzzleStr);
             System.Console.WriteLine();
 
-            ssol.Reset();
+            ssol.Restart();
 
             ConsoleKeyInfo k;
             while (true)

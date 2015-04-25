@@ -7,8 +7,8 @@
     <ProjectGuid>{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sukoduer.Console</RootNamespace>
-    <AssemblyName>Sukoduer.Console</AssemblyName>
+    <RootNamespace>Sudokuer.Console</RootNamespace>
+    <AssemblyName>Sudokuer.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

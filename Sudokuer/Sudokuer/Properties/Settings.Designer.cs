@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sodukuer.Properties
+namespace Sudokuer.Properties
 {
 
 

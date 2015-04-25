@@ -153,6 +153,10 @@ namespace SudokuSolver
             allcols.AddRange(_rowcoles.Cast<int>());
 
             _dl.Populate(dlsets, allcols, _rowDict);
+
+            // clears saved information
+            _fixSaved.RemovedNodes = null;
+            _fixSaved.FirstColumn = null;
         }
 
         /// <summary>
@@ -215,9 +219,12 @@ namespace SudokuSolver
             _dl.Step();
         }
 
-        public void Reset()
+        /// <summary>
+        ///  Restarts the solver (without removing the fixed items)
+        /// </summary>
+        public void Restart()
         {
-            _dl.Reset();
+            _dl.Restart();
         }
 
         #endregion

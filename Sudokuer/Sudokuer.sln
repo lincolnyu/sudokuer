@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sodukuer", "Sodukuer\Sodukuer.csproj", "{1DADE605-4FDA-4DE7-9698-595718BB40B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudokuer", "Sudokuer\Sudokuer.csproj", "{1DADE605-4FDA-4DE7-9698-595718BB40B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolver\SudokuSolver.csproj", "{F1DF6CBD-9FF2-473B-825D-26B770807115}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QSharp.Scheme.ExactCover", "..\..\qsharp\QSharp\QSharp.Scheme.ExactCover\QSharp.Scheme.ExactCover.csproj", "{B0C01EA7-99A0-454C-8836-EA4BE34FF3CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sukoduer.Console", "Sukoduer.Console\Sukoduer.Console.csproj", "{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudokuer.Console", "Sudokuer.Console\Sudokuer.Console.csproj", "{EDB52DE0-B4BF-4E35-91E4-8916497DBC55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
