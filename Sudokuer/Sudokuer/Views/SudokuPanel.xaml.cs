@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using Sudokuer.ViewModels;
 
 namespace Sudokuer.Views
 {
@@ -10,6 +13,51 @@ namespace Sudokuer.Views
     /// </summary>
     public partial class SudokuPanel
     {
+        #region Nested types
+
+        private class ValueTypeToBrushConverter : IValueConverter
+        {
+            #region Fields
+
+            public static readonly ValueTypeToBrushConverter Instance = new ValueTypeToBrushConverter();
+
+            #endregion
+
+            #region Methods
+
+            #region IValueConverter members
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                var t = (SudokuViewModel.ValueTypes) value;
+                Color clr;
+                switch (t)
+                {
+                    case SudokuViewModel.ValueTypes.Puzzle:
+                        clr = Colors.Black;
+                        break;
+                    case SudokuViewModel.ValueTypes.Key:
+                        clr = Colors.Blue;
+                        break;
+                    default: //case SudokuViewModel.ValueTypes.KeyJustUpdated:
+                        clr = Colors.Red;
+                        break;
+                }
+                return new SolidColorBrush(clr);
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotSupportedException();
+            }
+
+            #endregion
+
+            #endregion
+        }
+
+        #endregion
+
         #region Fields
 
         public static readonly DependencyProperty SubregionSizeProperty = DependencyProperty.Register("SubregionSize",
@@ -53,7 +101,7 @@ namespace Sudokuer.Views
 
             for (var i = 0; i < size; i++)
             {
-                var thickness = i % 3 == 0 ? thickLine : thinLine;
+                var thickness = i % srsize == 0 ? thickLine : thinLine;
                 MainGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(thickness) });
                 MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 MainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(thickness) });
@@ -81,6 +129,7 @@ namespace Sudokuer.Views
                 MainGrid.Children.Add(vertical);
             }
 
+            var fontSize = 18*3/srsize;
             // adds text boxes
             for (var i = 0; i < size; i++)
             {
@@ -91,10 +140,15 @@ namespace Sudokuer.Views
                     text.SetValue(Grid.ColumnProperty, j*2+1);
                     text.HorizontalContentAlignment = HorizontalAlignment.Center;
                     text.VerticalContentAlignment= VerticalAlignment.Center;
+                    text.FontFamily = new FontFamily("Arial");
+                    text.FontSize = fontSize;
 
-                    var s = string.Format("Values[{0}][{1}]", i, j);
+                    var s = string.Format("Cells[{0}][{1}].Value", i, j);
                     text.SetBinding(TextBox.TextProperty, new Binding(s) {Mode = BindingMode.TwoWay});
 
+                    s = string.Format("Cells[{0}][{1}].ValueType", i, j);
+                    text.SetBinding(ForegroundProperty, new Binding(s) { Converter = ValueTypeToBrushConverter.Instance });
+                    
                     MainGrid.Children.Add(text);
                 }
             }
