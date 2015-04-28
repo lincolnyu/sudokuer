@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using Sudokuer.ViewModels;
 
 namespace Sudokuer
@@ -21,10 +22,34 @@ namespace Sudokuer
 
         #region Methods
 
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            SetTitle();
+        }
+
         private void SolveClicked(object sender, RoutedEventArgs e)
         {
             var vm = (SudokuViewModel) DataContext;
-            vm.Solve();
+            var res = vm.Solve();
+            if (!res)
+            {
+                MessageBox.Show("No Solutions", Title);
+            }
+        }
+
+        private void SetTitle()
+        {
+            try
+            {
+                var ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.
+                    CurrentVersion;
+                Title = string.Format("Sudokuer (Ver {0}.{1})", ver.Major, ver.Minor);
+            }
+            catch (System.Deployment.Application.InvalidDeploymentException)
+            {
+                var ver = Assembly.GetExecutingAssembly().GetName().Version;
+                Title = string.Format("Sudokuer (Asm Ver {0}.{1})", ver.Major, ver.Minor);
+            }
         }
 
         #endregion

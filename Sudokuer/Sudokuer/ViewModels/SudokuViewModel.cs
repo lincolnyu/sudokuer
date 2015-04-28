@@ -18,10 +18,26 @@ namespace Sudokuer.ViewModels
 
         public class CellViewModel : BaseViewModel
         {
+            #region Delegates
+
+            public delegate void CellChangedEventHandler(int row, int col);
+
+            #endregion
+
             #region Fields
 
             private ValueTypes _valueType;
             private string _value;
+
+            #endregion
+
+            #region Constructors
+
+            public CellViewModel(int row, int col)
+            {
+                Row = row;
+                Col = col;
+            }
 
             #endregion
 
@@ -36,6 +52,7 @@ namespace Sudokuer.ViewModels
                     {
                         _valueType = value;
                         OnPropertyChanged();
+                        RaiseCellChangedEvent();
                     }
                 }
             }
@@ -49,7 +66,30 @@ namespace Sudokuer.ViewModels
                     {
                         _value = value;
                         OnPropertyChanged();
+                        RaiseCellChangedEvent();
                     }
+                }
+            }
+
+            public int Row { get; private set; }
+
+            public int Col { get; private set; }
+
+            #endregion
+
+            #region Events
+
+            public event CellChangedEventHandler CellChanged;
+
+            #endregion
+
+            #region Methods
+
+            private void RaiseCellChangedEvent()
+            {
+                if (CellChanged != null)
+                {
+                    CellChanged(Row, Col);
                 }
             }
 
@@ -78,6 +118,11 @@ namespace Sudokuer.ViewModels
         #endregion
 
         private int _subregionSize;
+
+        /// <summary>
+        ///  If EliminatesKey() is being called
+        /// </summary>
+        private bool _inEliminatesKey;
 
         #region Properties
 
@@ -122,6 +167,7 @@ namespace Sudokuer.ViewModels
                     for (var j = 0; j < Cells[i].Length; j++)
                     {
                         Cells[i][j].PropertyChanged -= OnCellPropertyChanged;
+                        Cells[i][j].CellChanged -= CellChanged;
                     }
                 }
             }
@@ -132,8 +178,9 @@ namespace Sudokuer.ViewModels
                 Cells[i] = new CellViewModel[Size];
                 for (var j = 0; j < Size; j++)
                 {
-                    Cells[i][j] = new CellViewModel();
+                    Cells[i][j] = new CellViewModel(i, j);
                     Cells[i][j].PropertyChanged += OnCellPropertyChanged;
+                    Cells[i][j].CellChanged += CellChanged;
                 }
             }
 
@@ -142,6 +189,7 @@ namespace Sudokuer.ViewModels
             _needReSolve = true;
         }
 
+
         public bool Solve()
         {
             return _needReSolve ? ReSolve() : SolveNext();
@@ -149,10 +197,42 @@ namespace Sudokuer.ViewModels
 
         private void OnCellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // seems nothing needs to be done since CellChanged() takes it over
+        }
+
+        private void CellChanged(int row, int col)
+        {
             if (!_populatingSolution)
             {
                 _needReSolve = true;
+                EliminatesKey(row, col);
             }
+        }
+
+        private void EliminatesKey(int row, int col)
+        {
+            if (_inEliminatesKey)
+            {
+                return;
+            }
+            _inEliminatesKey = true;
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    var cell = Cells[i][j];
+                    if (i == row && j == col)
+                    {
+                        cell.ValueType = ValueTypes.Puzzle;
+                        continue;
+                    }
+                    if (cell.ValueType != ValueTypes.Puzzle)
+                    {
+                        cell.Value = "";
+                    }
+                }
+            }
+            _inEliminatesKey = false;
         }
 
         private bool SolveNext()
