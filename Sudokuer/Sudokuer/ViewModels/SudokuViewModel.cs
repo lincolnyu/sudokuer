@@ -189,7 +189,11 @@ namespace Sudokuer.ViewModels
                 }
             }
             _solver.UnPlace();
-            _solver.Place(tuples);
+            var validPlace = _solver.Place(tuples);
+            if (!validPlace)
+            {
+                return false;
+            }
             return RunSolve();
         }
 

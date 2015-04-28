@@ -155,7 +155,8 @@ namespace SudokuSolver
             _dl.Populate(dlsets, allcols, _rowDict);
 
             // clears saved information
-            _fixSaved.RemovedNodes = null;
+            _fixSaved.RemovedNodes.Clear();
+            _fixSaved.RemovedNodesSet.Clear();
             _fixSaved.FirstColumn = null;
         }
 
@@ -165,20 +166,22 @@ namespace SudokuSolver
         /// <param name="row">The row</param>
         /// <param name="col">The column</param>
         /// <param name="val">The number</param>
-        public void Place(int row, int col, int val)
+        /// <returns>If the placement is valid</returns>
+        public bool Place(int row, int col, int val)
         {
             var set = _sets[row, col, val];
-            _dl.Fix(_rowDict, new[] {set}, _fixSaved);
+            return _dl.Fix(_rowDict, new[] {set}, _fixSaved);
         }
 
         /// <summary>
         ///  Place pre-existing numbers
         /// </summary>
         /// <param name="tuples">The pre-existing numbers</param>
-        public void Place(IEnumerable<Tuple> tuples)
+        /// <returns>If the placement is valid</returns>
+        public bool Place(IEnumerable<Tuple> tuples)
         {
             var pesets = tuples.Select(tuple => _sets[tuple.Row, tuple.Column, tuple.Value]).ToList();
-            _dl.Fix(_rowDict, pesets, _fixSaved);
+            return _dl.Fix(_rowDict, pesets, _fixSaved);
         }
 
         /// <summary>
