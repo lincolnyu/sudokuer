@@ -102,7 +102,7 @@ namespace Sudokuer.ViewModels
 
         private readonly Solver _solver = new Solver();
 
-        private bool _populatingSolution;
+        private bool _skuChangingCells;
 
         private bool _needReSolve;
 
@@ -195,6 +195,26 @@ namespace Sudokuer.ViewModels
             return _needReSolve ? ReSolve() : SolveNext();
         }
 
+
+        public void Reset()
+        {
+            _skuChangingCells = true;
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    var cell = Cells[i][j];
+                    if (cell.ValueType != ValueTypes.Puzzle)
+                    {
+                        cell.Value = "";
+                    }
+                }
+            }
+            _skuChangingCells = false;
+            _needReSolve = true;
+            _solver.Restart();
+        }
+
         private void OnCellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // seems nothing needs to be done since CellChanged() takes it over
@@ -202,7 +222,7 @@ namespace Sudokuer.ViewModels
 
         private void CellChanged(int row, int col)
         {
-            if (!_populatingSolution)
+            if (!_skuChangingCells)
             {
                 _needReSolve = true;
                 EliminatesKey(row, col);
@@ -221,7 +241,7 @@ namespace Sudokuer.ViewModels
                 for (var j = 0; j < Size; j++)
                 {
                     var cell = Cells[i][j];
-                    if (i == row && j == col)
+                    if (i == row && j == col && !string.IsNullOrWhiteSpace(cell.Value))
                     {
                         cell.ValueType = ValueTypes.Puzzle;
                         continue;
@@ -286,7 +306,7 @@ namespace Sudokuer.ViewModels
                 return false;
             }
 
-            _populatingSolution = true;
+            _skuChangingCells = true;
             foreach (var s in sol)
             {
                 var cell = Cells[s.Row][s.Column];
@@ -302,7 +322,7 @@ namespace Sudokuer.ViewModels
                 }
                 cell.Value = newVal;
             }
-            _populatingSolution = false;
+            _skuChangingCells = false;
 
             return true;
         }

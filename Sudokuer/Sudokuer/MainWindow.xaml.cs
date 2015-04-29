@@ -22,6 +22,8 @@ namespace Sudokuer
 
         #region Methods
 
+        #region Event handlers
+
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             SetTitle();
@@ -36,6 +38,14 @@ namespace Sudokuer
                 MessageBox.Show("No Solutions", Title);
             }
         }
+
+        private void ResetClicked(object sender, RoutedEventArgs e)
+        {
+            var vm = (SudokuViewModel)DataContext;
+            vm.Reset();
+        }
+
+        #endregion
 
         private void SetTitle()
         {
