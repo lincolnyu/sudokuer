@@ -63,6 +63,8 @@ namespace Sudokuer.Views
         public static readonly DependencyProperty SubregionSizeProperty = DependencyProperty.Register("SubregionSize",
             typeof (int), typeof (SudokuPanel), new PropertyMetadata(3, PropertyChangedCallback));
 
+        private TextBox[,] _textBoxes;
+
         #endregion
 
         #region Constructors
@@ -84,9 +86,24 @@ namespace Sudokuer.Views
             set { SetValue(SubregionSizeProperty, value); }
         }
 
+        public int FocusedCellRow { get; private set; }
+
+        public int FocusedCellCol { get; private set; }
+
+
         #endregion
 
         #region Methods
+
+        public void SetFocus(int row, int col)
+        {
+            var size = SubregionSize*SubregionSize;
+            if (row < 0 || row >= size || col < 0 || col >= size)
+            {
+                return;
+            }
+            _textBoxes[row, col].Focus();
+        }
 
         private void UpdateGrid()
         {
@@ -94,6 +111,15 @@ namespace Sudokuer.Views
             var size = srsize*srsize;
             MainGrid.ColumnDefinitions.Clear();
             MainGrid.RowDefinitions.Clear();
+
+            if (_textBoxes != null)
+            {
+                foreach (var text in _textBoxes)
+                {
+                    text.GotFocus -= TextGotFocus;
+                }
+            }
+
             MainGrid.Children.Clear();
 
             const double thickLine = 3;
@@ -129,6 +155,10 @@ namespace Sudokuer.Views
                 MainGrid.Children.Add(vertical);
             }
 
+            _textBoxes = new TextBox[size,size];
+            FocusedCellRow = -1;
+            FocusedCellCol = -1;
+
             var fontSize = 18*3/srsize;
             // adds text boxes
             for (var i = 0; i < size; i++)
@@ -148,10 +178,20 @@ namespace Sudokuer.Views
 
                     s = string.Format("Cells[{0}][{1}].ValueType", i, j);
                     text.SetBinding(ForegroundProperty, new Binding(s) { Converter = ValueTypeToBrushConverter.Instance });
-                    
+
+                    text.GotFocus += TextGotFocus;
+                    _textBoxes[i, j] = text;
+
                     MainGrid.Children.Add(text);
                 }
-            }
+            }            
+        }
+
+        private void TextGotFocus(object sender, RoutedEventArgs e)
+        {
+            var text = (TextBox) sender;
+            FocusedCellRow = ((int)text.GetValue(Grid.RowProperty)-1)/2;
+            FocusedCellCol = ((int)text.GetValue(Grid.ColumnProperty)-1)/2;
         }
 
         private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs args)

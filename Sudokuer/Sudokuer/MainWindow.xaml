@@ -4,7 +4,7 @@
         xmlns:views="clr-namespace:Sudokuer.Views"
         Title="MainWindow" Height="550" Width="525"
         Loaded="MainWindow_OnLoaded"
-        Name="TheWindow">
+        Name="TheWindow" Focusable="True" PreviewKeyDown="MainWindow_OnPreviewKeyDown">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,8 +22,10 @@
                   Text="{Binding SubregionSize, Converter={StaticResource IntToStringConverter}, Mode=TwoWay}"/>
                 <Button Margin="10,0,0,0" Click="SolveClicked">Solve</Button>
                 <Button Margin="10,0,0,0" Click="ResetClicked">Reset</Button>
+                <Button Margin="10,0,0,0" Click="ClearClicked">Clear</Button>
             </StackPanel>
         </Grid>
-        <views:SudokuPanel SubregionSize="{Binding SubregionSize, Converter={StaticResource IntToStringConverter}, Mode=TwoWay}"/>
+        <views:SudokuPanel x:Name="Sp"
+            SubregionSize="{Binding SubregionSize, Converter={StaticResource IntToStringConverter}, Mode=TwoWay}"/>
     </DockPanel>
 </Window>

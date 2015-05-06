@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 using Sudokuer.ViewModels;
 
 namespace Sudokuer
@@ -29,6 +30,39 @@ namespace Sudokuer
             SetTitle();
         }
 
+        private void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var r = Sp.FocusedCellRow;
+            var c = Sp.FocusedCellCol;
+            var moved = false;
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                    r--;
+                    moved = true;
+                    break;
+                case Key.Down:
+                    r++;
+                    moved = true;
+                    break;
+                case Key.Left:
+                    c--;
+                    moved = true;
+                    break;
+                case Key.Right:
+                    c++;
+                    moved = true;
+                    break;
+            }
+
+            if (moved && (Sp.FocusedCellRow < 0 || Sp.FocusedCellCol < 0))
+            {
+                c = r = 0;
+            }
+            Sp.SetFocus(r, c);
+        }
+        
         private void SolveClicked(object sender, RoutedEventArgs e)
         {
             var vm = (SudokuViewModel) DataContext;
@@ -43,6 +77,12 @@ namespace Sudokuer
         {
             var vm = (SudokuViewModel)DataContext;
             vm.Reset();
+        }
+
+        private void ClearClicked(object sender, RoutedEventArgs e)
+        {
+            var vm = (SudokuViewModel)DataContext;
+            vm.Clear();
         }
 
         #endregion

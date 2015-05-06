@@ -212,7 +212,22 @@ namespace Sudokuer.ViewModels
             }
             _skuChangingCells = false;
             _needReSolve = true;
-            _solver.Restart();
+           // _solver.Restart(); // this is not needed
+        }
+
+        public void Clear()
+        {
+            _skuChangingCells = true;
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    var cell = Cells[i][j];
+                    cell.Value = "";
+                }
+            }
+            _skuChangingCells = false;
+            _needReSolve = true;
         }
 
         private void OnCellPropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -26,11 +26,12 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://sudokuer.codeplex.com/releases/clickonce/</InstallUrl>
     <SupportUrl>http://sudokuer.codeplex.com</SupportUrl>
-    <PublisherName>quanebnSoft</PublisherName>
+    <ProductName>Sudokuer</ProductName>
+    <PublisherName>quanbenSoft</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
