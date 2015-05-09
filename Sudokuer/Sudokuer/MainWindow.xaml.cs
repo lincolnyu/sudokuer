@@ -32,35 +32,46 @@ namespace Sudokuer
 
         private void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            var moved = false;
             var r = Sp.FocusedCellRow;
             var c = Sp.FocusedCellCol;
-            var moved = false;
 
-            switch (e.Key)
-            {
-                case Key.Up:
-                    r--;
-                    moved = true;
-                    break;
-                case Key.Down:
-                    r++;
-                    moved = true;
-                    break;
-                case Key.Left:
-                    c--;
-                    moved = true;
-                    break;
-                case Key.Right:
-                    c++;
-                    moved = true;
-                    break;
-            }
+            var leftKeyState = Keyboard.GetKeyStates(Key.LeftShift);
+            var rightKeyState = Keyboard.GetKeyStates(Key.RightShift);
 
-            if (moved && (Sp.FocusedCellRow < 0 || Sp.FocusedCellCol < 0))
+            var shiftDown = (leftKeyState & KeyStates.Down) != 0 || (rightKeyState & KeyStates.Down) != 0;
+
+            if (!shiftDown)
             {
-                c = r = 0;
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        r--;
+                        moved = true;
+                        break;
+                    case Key.Down:
+                        r++;
+                        moved = true;
+                        break;
+                    case Key.Left:
+                        c--;
+                        moved = true;
+                        break;
+                    case Key.Right:
+                        c++;
+                        moved = true;
+                        break;
+                }
             }
-            Sp.SetFocus(r, c);
+            
+            if (moved)
+            {
+                if (Sp.FocusedCellRow < 0 || Sp.FocusedCellCol < 0)
+                {
+                    c = r = 0;
+                }
+                Sp.SetFocus(r, c);
+            }
         }
         
         private void SolveClicked(object sender, RoutedEventArgs e)
