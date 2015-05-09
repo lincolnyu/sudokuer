@@ -1,0 +1,24 @@
+﻿<Window x:Class="Sudokuer.Views.MaxNumSolutionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MaxNumSolutionsDialog" Height="200" Width="300"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                  Source="../Resources/Base.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical" Margin="5">
+        <TextBlock TextWrapping="Wrap">The maximum number of solutions to export: (-1 if you really want to export all)</TextBlock>
+        <TextBox Width ="120" Text="{Binding MaxNumSols, Converter={StaticResource IntToStringConverter}}"></TextBox>
+        <TextBlock TextWrapping="Wrap">NOTE: A random Sudoku may have multitude keys.
+            Exporting all of these keys will take very long time if not forever and create huge file.
+            So it is highly recommended that you choose only to export certain number of keys.
+        </TextBlock>
+        <Button Width="120" Click="OkOnClicked">OK</Button>
+    </StackPanel>
+</Window>

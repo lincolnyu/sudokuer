@@ -23,6 +23,7 @@
                 <Button Margin="10,0,0,0" Click="SolveClicked">Solve</Button>
                 <Button Margin="10,0,0,0" Click="ResetClicked">Reset</Button>
                 <Button Margin="10,0,0,0" Click="ClearClicked">Clear</Button>
+                <Button Margin="10,0,0,0" Click="ExportClicked" IsEnabled="{Binding NeedReSolve}">Export</Button>
             </StackPanel>
         </Grid>
         <views:SudokuPanel x:Name="Sp"

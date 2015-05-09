@@ -1,7 +1,10 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using Sudokuer.ViewModels;
+using Sudokuer.Views;
 
 namespace Sudokuer
 {
@@ -94,6 +97,34 @@ namespace Sudokuer
         {
             var vm = (SudokuViewModel)DataContext;
             vm.Clear();
+        }
+
+        private void ExportClicked(object sender, RoutedEventArgs e)
+        {
+            var vm = (SudokuViewModel)DataContext;
+            var dlg = new SaveFileDialog
+            {
+                Filter = "Text files (*.txt)|*.txt"
+            };
+            const long defaultMaxNumSols = 10000;
+            if (dlg.ShowDialog() == true)
+            {
+                var mnsdlg = new MaxNumSolutionsDialog
+                {
+                    Owner = this,
+                    Title = Title,
+                    MaxNumSols = defaultMaxNumSols
+                };
+                mnsdlg.ShowDialog();
+                var maxToShow = mnsdlg.MaxNumSols;
+
+                var file = dlg.FileName;
+                using (var sw = new StreamWriter(file))
+                {
+                    vm.Export(sw, maxToShow);
+                }
+                MessageBox.Show("Exporting has been completed.", Title);
+            }
         }
 
         #endregion

@@ -103,6 +103,9 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\SudokuViewModel.cs" />
+    <Compile Include="Views\MaxNumSolutionsDialog.xaml.cs">
+      <DependentUpon>MaxNumSolutionsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SudokuPanel.xaml.cs">
       <DependentUpon>SudokuPanel.xaml</DependentUpon>
     </Compile>
@@ -122,6 +125,10 @@
     <Page Include="Resources\Base.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MaxNumSolutionsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SudokuPanel.xaml">
       <SubType>Designer</SubType>

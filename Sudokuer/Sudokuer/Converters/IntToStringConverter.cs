@@ -17,8 +17,17 @@ namespace Sudokuer.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (targetType == typeof(long))
+            {
+                long lval;
+                if (!long.TryParse((string) value, out lval))
+                {
+                    lval = 0;
+                }
+                return lval;
+            }
             int ival;
-            if (!int.TryParse((string) value, out ival))
+            if (!int.TryParse((string)value, out ival))
             {
                 ival = 0;
             }
