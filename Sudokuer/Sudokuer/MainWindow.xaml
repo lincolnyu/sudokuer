@@ -20,10 +20,11 @@
                 <TextBlock>Block Size:</TextBlock>
                 <ComboBox Name="SubregionSizeComboBox"  ItemsSource="{Binding SubregionSizes}" Margin="5,0,0,0"
                   Text="{Binding SubregionSize, Converter={StaticResource IntToStringConverter}, Mode=TwoWay}"/>
-                <Button Margin="10,0,0,0" Click="SolveClicked">Solve</Button>
-                <Button Margin="10,0,0,0" Click="ResetClicked">Reset</Button>
-                <Button Margin="10,0,0,0" Click="ClearClicked">Clear</Button>
-                <Button Margin="10,0,0,0" Click="ExportClicked" IsEnabled="{Binding NeedReSolve}">Export</Button>
+                <Button Margin="10,0,0,0" Click="SolveClicked" ToolTip="Solve the puzzle to get the next solution">Solve</Button>
+                <Button Margin="10,0,0,0" Click="ResetClicked" ToolTip="Reset the puzzle so only the puzzle itself remains">Reset</Button>
+                <Button Margin="10,0,0,0" Click="ClearClicked" ToolTip="Clear the entire puzzle">Clear</Button>
+                <Button Margin="10,0,0,0" Click="ExportClicked" IsEnabled="{Binding NeedReSolve}"
+                        ToolTip="Exports multiple solutions. Only available when the puzzle is reset since this program is single threaded and at most only one solver instance is running at a time">Export</Button>
             </StackPanel>
         </Grid>
         <views:SudokuPanel x:Name="Sp"

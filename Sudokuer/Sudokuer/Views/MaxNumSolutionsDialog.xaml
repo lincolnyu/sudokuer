@@ -16,7 +16,7 @@
         <TextBlock TextWrapping="Wrap">The maximum number of solutions to export: (-1 if you really want to export all)</TextBlock>
         <TextBox Width ="120" Text="{Binding MaxNumSols, Converter={StaticResource IntToStringConverter}}"></TextBox>
         <TextBlock TextWrapping="Wrap">NOTE: A random Sudoku may have multitude keys.
-            Exporting all of these keys will take very long time if not forever and create huge file.
+            Exporting all of these keys will take very long time if not forever and create huge files.
             So it is highly recommended that you choose only to export certain number of keys.
         </TextBlock>
         <Button Width="120" Click="OkOnClicked">OK</Button>
