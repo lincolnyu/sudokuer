@@ -387,6 +387,34 @@ namespace Sudokuer.ViewModels
                 return;
             }
 
+            var digits = (int)Math.Floor(Math.Log10(Size)) + 1;
+            var format = "{0:" + new string('0', digits) + "}";
+            var blank = new string(' ', digits);
+
+            // the original puzzle
+            sw.WriteLine("Puzzle");
+            for (var i = 0; i < Size; i++)
+            {
+                for (var j = 0; j < Size; j++)
+                {
+                    if (j > 0)
+                    {
+                        sw.Write(" ");
+                    }
+                    if (cells[i,j] > 0)
+                    {
+                        sw.Write(format, cells[i, j]);
+                    }
+                    else
+                    {
+                        sw.Write(blank);
+                    }
+                }
+                sw.WriteLine();
+            }
+            sw.WriteLine();
+
+            // the solutions
             for (long sn = 1; ; _solver.Next(), sn++)
             {
                 var sol = _solver.Solve();
@@ -408,8 +436,6 @@ namespace Sudokuer.ViewModels
 
                 sw.WriteLine("Solution {0}", sn);
 
-                var digits = (int)Math.Floor(Math.Log10(Size)) + 1;
-                var format = "{0:" + new string('0', digits) + "}";
                 for (var i = 0; i < Size; i++)
                 {
                     for (var j = 0; j < Size; j++)
